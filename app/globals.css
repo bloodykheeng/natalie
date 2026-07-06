@@ -1,26 +1,212 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ————————————————————————————————————————————————
+   Two skies, one site:
+   dark  = night sky (default — her aesthetic)
+   light = dawn sky (warm ivory, deep golds)
+   Theme is driven by data-theme on <html>.
+———————————————————————————————————————————————— */
+
+:root,
+:root[data-theme="dark"] {
+  --night-950: #030510;
+  --night-900: #050815;
+  --night-800: #0a1128;
+  --night-700: #101a3a;
+  --night-600: #1a2750;
+
+  --ink: #e8e6dc;
+  --ink-dim: #b9b6a8;
+
+  /* Bright golds read well on midnight */
+  --gold-300: #f3e5b8;
+  --gold-400: #ecd9a0;
+
+  --aurora-teal-c: #5eead4;
+  --aurora-violet-c: #a78bfa;
+  --aurora-blue-c: #7dd3fc;
+
+  /* Canvas star color as an RGB triplet */
+  --star-rgb: 226, 232, 240;
+
+  --background: var(--night-900);
+  --foreground: var(--ink);
+}
+
+:root[data-theme="light"] {
+  --night-950: #fbf6e9;
+  --night-900: #f6f0df;
+  --night-800: #fffcf2;
+  --night-700: #efe6cd;
+  --night-600: #e3d7b6;
+
+  --ink: #2b2a33;
+  --ink-dim: #67624f;
+
+  /* Deep golds keep contrast on ivory */
+  --gold-300: #7a5d10;
+  --gold-400: #906f14;
+
+  --aurora-teal-c: #0f766e;
+  --aurora-violet-c: #6d28d9;
+  --aurora-blue-c: #0369a1;
+
+  /* Faint indigo stars in the dawn sky */
+  --star-rgb: 49, 46, 129;
+
+  --background: var(--night-900);
+  --foreground: var(--ink);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* ——— Surfaces & text flip with the theme ——— */
+  --color-midnight-950: var(--night-950);
+  --color-midnight-900: var(--night-900);
+  --color-midnight-800: var(--night-800);
+  --color-midnight-700: var(--night-700);
+  --color-midnight-600: var(--night-600);
+
+  --color-parchment: var(--ink);
+  --color-parchment-dim: var(--ink-dim);
+
+  --color-gold-300: var(--gold-300);
+  --color-gold-400: var(--gold-400);
+  /* Solid gold surfaces stay constant (always carry dark text) */
+  --color-gold-500: #d4af37;
+  --color-gold-600: #b8942a;
+  /* Text placed ON a solid gold surface — constant in both themes */
+  --color-on-gold: #241c05;
+
+  --color-aurora-teal: var(--aurora-teal-c);
+  --color-aurora-violet: var(--aurora-violet-c);
+  --color-aurora-blue: var(--aurora-blue-c);
+
+  /* ——— Fonts (variables set by next/font in app/layout.tsx) ——— */
+  --font-display: var(--font-cormorant);
+  --font-body: var(--font-garamond);
+  --font-script: var(--font-great-vibes);
+
+  /* ——— Motion ——— */
+  --animate-twinkle: twinkle 3.6s ease-in-out infinite;
+  --animate-aurora-a: aurora-a 26s ease-in-out infinite alternate;
+  --animate-aurora-b: aurora-b 32s ease-in-out infinite alternate;
+  --animate-aurora-c: aurora-c 38s ease-in-out infinite alternate;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-scroll-cue: scroll-cue 2.2s ease-in-out infinite;
+  --animate-shimmer: shimmer 3.2s linear infinite;
+  --animate-spin-slow: spin 14s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+
+@keyframes aurora-a {
+  0%   { transform: translate3d(-8%, -4%, 0) rotate(-6deg) scale(1); }
+  100% { transform: translate3d(10%, 6%, 0) rotate(8deg) scale(1.15); }
+}
+
+@keyframes aurora-b {
+  0%   { transform: translate3d(6%, 8%, 0) rotate(10deg) scale(1.1); }
+  100% { transform: translate3d(-10%, -6%, 0) rotate(-8deg) scale(0.95); }
+}
+
+@keyframes aurora-c {
+  0%   { transform: translate3d(0, 10%, 0) rotate(0deg) scale(1); }
+  100% { transform: translate3d(4%, -8%, 0) rotate(12deg) scale(1.2); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes scroll-cue {
+  0%   { transform: translateY(0); opacity: 1; }
+  70%  { transform: translateY(10px); opacity: 0.2; }
+  100% { transform: translateY(10px); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), Georgia, serif;
+  overflow-x: hidden;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+/* Gold gradient text for headings and the wordmark */
+.text-gold-gradient {
+  background: linear-gradient(
+    105deg,
+    #b8942a 0%,
+    #ecd9a0 30%,
+    #f6ecc8 50%,
+    #d4af37 70%,
+    #9a7b22 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Deeper gold stops so the gradient stays readable on ivory */
+:root[data-theme="light"] .text-gold-gradient {
+  background-image: linear-gradient(
+    105deg,
+    #6f550e 0%,
+    #a3821f 30%,
+    #c09b25 50%,
+    #8a6d1c 70%,
+    #5f480a 100%
+  );
+  background-size: 200% auto;
+}
+
+.text-gold-gradient-animated {
+  animation: var(--animate-shimmer);
+}
+
+/* Ornate double-ring frame used around the portrait */
+.ornate-ring {
+  box-shadow:
+    0 0 0 1px rgb(212 175 55 / 0.65),
+    0 0 0 8px var(--night-900),
+    0 0 0 9px rgb(212 175 55 / 0.35),
+    0 0 60px 8px rgb(212 175 55 / 0.12);
+}
+
+/* Visible gold focus ring for keyboard users */
+:focus-visible {
+  outline: 2px solid #d4af37;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: rgb(212 175 55 / 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

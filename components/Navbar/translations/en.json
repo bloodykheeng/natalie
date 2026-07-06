@@ -1,0 +1,12 @@
+{
+  "navbar": {
+    "about": "About",
+    "repertoire": "Repertoire",
+    "videos": "Videos",
+    "ariaMain": "Main navigation",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "themeLight": "Switch to the dawn sky (light theme)",
+    "themeDark": "Switch to the night sky (dark theme)"
+  }
+}

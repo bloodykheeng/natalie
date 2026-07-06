@@ -1,0 +1,25 @@
+{
+  "repertoire": {
+    "kicker": "Repertoire",
+    "heading": "Four worlds, one voice",
+    "intro": "From candle-lit standards to walls of guitars — the songs she has made her own.",
+    "genres": {
+      "jazz": {
+        "title": "Vintage Jazz & Swing",
+        "mood": "pearls, brass and candlelight"
+      },
+      "gothic": {
+        "title": "Gothic & Nordic",
+        "mood": "storms, forests and old gods"
+      },
+      "rock": {
+        "title": "Classic Rock & Pop",
+        "mood": "highways, heartbreak and gold dust"
+      },
+      "screen": {
+        "title": "Songs of the Screen",
+        "mood": "red curtains and silver light"
+      }
+    }
+  }
+}

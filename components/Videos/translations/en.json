@@ -1,0 +1,15 @@
+{
+  "videos": {
+    "kicker": "Listen & watch",
+    "heading": "The night's programme",
+    "featured": "Featured cover",
+    "play": "Play",
+    "channelCta": "Visit her YouTube channel",
+    "genres": {
+      "jazz": "Jazz",
+      "gothic": "Gothic",
+      "rock": "Rock",
+      "screen": "Screen"
+    }
+  }
+}

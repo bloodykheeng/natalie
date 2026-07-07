@@ -1,0 +1,10 @@
+{
+  "musicDock": {
+    "hint": "♪ Press play — I'll sing for you",
+    "play": "Play my music",
+    "pause": "Pause the music",
+    "next": "Next song",
+    "expand": "Show the player",
+    "collapse": "Hide the player"
+  }
+}

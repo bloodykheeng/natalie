@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import Ornament from '@/components/Ornament/Ornament';
+import Tilt from '@/components/Tilt/Tilt';
+import HeroVinyl from './HeroVinyl';
 
 export default function Hero() {
   const t = useTranslations('hero');
@@ -74,20 +75,14 @@ export default function Hero() {
         </div>
 
         {/* ——— Portrait ——— */}
-        <div ref={portraitRef} className="flex justify-center will-change-transform">
+        <div ref={portraitRef} className="flex justify-center will-change-transform lg:justify-end">
+          <Tilt max={10} className="lg:translate-x-14">
           <div className="relative animate-float">
             <div
               aria-hidden="true"
               className="absolute -inset-8 rounded-full bg-[radial-gradient(circle,rgba(167,139,250,0.18),rgba(94,234,212,0.10)_55%,transparent_70%)] blur-xl"
             />
-            <Image
-              src="/images/natalie-portrait.jpg"
-              alt={t('portraitAlt')}
-              width={340}
-              height={340}
-              priority
-              className="ornate-ring relative h-auto w-56 rounded-full object-cover sm:w-72 lg:w-85"
-            />
+            <HeroVinyl alt={t('portraitAlt')} />
             {/* Orbiting star */}
             <div
               aria-hidden="true"
@@ -98,6 +93,7 @@ export default function Hero() {
               </span>
             </div>
           </div>
+          </Tilt>
         </div>
       </div>
 

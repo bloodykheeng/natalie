@@ -7,6 +7,8 @@ export type Video = {
   title: string;
   genreKey: GenreKey;
   featured?: boolean;
+  /** false = owner disabled embedding; card links out to YouTube instead */
+  embeddable?: boolean;
 };
 
 // Real videos from https://www.youtube.com/@Northern_skyy
@@ -20,7 +22,12 @@ export const videos: Video[] = [
   { id: 'YktT4iVr3Lw', title: 'Dream a Little Dream of Me', genreKey: 'jazz' },
   { id: 'mNNX74CnBJE', title: 'Come What May — Moulin Rouge!', genreKey: 'screen' },
   { id: 'BV8_FqUuJEc', title: 'Myrkur — Harpens Kraft', genreKey: 'gothic' },
-  { id: 'OLaK5OdZSYU', title: 'Happy Time — Bob Crosby', genreKey: 'jazz' },
+  {
+    id: 'OLaK5OdZSYU',
+    title: 'Happy Time — Bob Crosby',
+    genreKey: 'jazz',
+    embeddable: false // owner disabled playback on other websites
+  },
   { id: 'qKzYaVlOFG4', title: 'Fleetwood Mac — Rhiannon', genreKey: 'rock' },
   { id: 'YKteTOGIc00', title: 'Juice Newton — Angel of the Morning', genreKey: 'rock' },
   { id: '_NVKQWU9EkU', title: "Lesley Gore — It's My Party", genreKey: 'rock' },

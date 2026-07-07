@@ -51,7 +51,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-midnight-900 text-parchment">
+      <body className="min-h-full flex flex-col text-parchment">
         <NextIntlClientProvider messages={messages}>
           <LocaleProvider initialLocale={locale}>
             <ThemeProvider>{children}</ThemeProvider>

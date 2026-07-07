@@ -1,7 +1,8 @@
 {
   "navbar": {
-    "about": "About",
+    "about": "About me",
     "repertoire": "Repertoire",
+    "gallery": "Gallery",
     "videos": "Videos",
     "ariaMain": "Main navigation",
     "menuOpen": "Open menu",

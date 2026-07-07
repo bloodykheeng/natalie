@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import LanguageSwitcher from '@/components/LanguageSwitcher/LanguageSwitcher';
 import ThemeToggle from '@/components/ThemeToggle/ThemeToggle';
 
-const SECTION_IDS = ['about', 'repertoire', 'videos'] as const;
+const SECTION_IDS = ['about', 'repertoire', 'gallery', 'videos'] as const;
 
 export default function Navbar() {
   const t = useTranslations('navbar');
@@ -47,13 +47,26 @@ export default function Navbar() {
     label: t(id)
   }));
 
+  // Close the menu first, then scroll — otherwise the collapsing menu
+  // shifts the layout mid-scroll and the browser lands in the wrong place
+  const onMobileLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    id: string
+  ) => {
+    e.preventDefault();
+    setOpen(false);
+    history.replaceState(null, '', `#${id}`);
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }, 260); // just after the menu collapse animation (220ms)
+  };
+
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled || open
-          ? 'border-b border-gold-500/15 bg-midnight-950/90 backdrop-blur-md'
-          : 'bg-transparent'
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${scrolled || open
+        ? 'border-b border-gold-500/15 bg-midnight-950/90 backdrop-blur-md'
+        : 'bg-transparent'
+        }`}
     >
       <nav
         aria-label={t('ariaMain')}
@@ -75,18 +88,16 @@ export default function Navbar() {
                 <a
                   href={link.href}
                   aria-current={active === link.id ? 'true' : undefined}
-                  className={`relative py-2 font-display text-lg tracking-wide transition-colors duration-200 ${
-                    active === link.id
-                      ? 'text-gold-400'
-                      : 'text-parchment-dim hover:text-gold-400'
-                  }`}
+                  className={`relative py-2 font-display text-lg tracking-wide transition-colors duration-200 ${active === link.id
+                    ? 'text-gold-400'
+                    : 'text-parchment-dim hover:text-gold-400'
+                    }`}
                 >
                   {link.label}
                   <span
                     aria-hidden="true"
-                    className={`absolute -bottom-0.5 left-0 h-px w-full origin-left bg-gold-400 transition-transform duration-300 ${
-                      active === link.id ? 'scale-x-100' : 'scale-x-0'
-                    }`}
+                    className={`absolute -bottom-0.5 left-0 h-px w-full origin-left bg-gold-400 transition-transform duration-300 ${active === link.id ? 'scale-x-100' : 'scale-x-0'
+                      }`}
                   />
                 </a>
               </li>
@@ -141,13 +152,12 @@ export default function Navbar() {
                 <li key={link.id}>
                   <a
                     href={link.href}
-                    onClick={() => setOpen(false)}
+                    onClick={(e) => onMobileLinkClick(e, link.id)}
                     aria-current={active === link.id ? 'true' : undefined}
-                    className={`flex min-h-11 items-center rounded-lg px-3 font-display text-xl tracking-wide transition-colors duration-200 ${
-                      active === link.id
-                        ? 'bg-gold-500/10 text-gold-400'
-                        : 'text-parchment hover:bg-gold-500/5 hover:text-gold-400'
-                    }`}
+                    className={`flex min-h-11 items-center rounded-lg px-3 font-display text-xl tracking-wide transition-colors duration-200 ${active === link.id
+                      ? 'bg-gold-500/10 text-gold-400'
+                      : 'text-parchment hover:bg-gold-500/5 hover:text-gold-400'
+                      }`}
                   >
                     {active === link.id && (
                       <span aria-hidden="true" className="mr-2 text-sm">

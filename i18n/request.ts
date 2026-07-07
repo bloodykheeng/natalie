@@ -26,10 +26,14 @@ export default getRequestConfig(async ({ requestLocale }) => {
     messages: {
       ...(await import(`@/app/[locale]/translations/${locale}.json`)).default,
       ...(await import(`@/components/Navbar/translations/${locale}.json`)).default,
+      ...(await import(`@/components/LanguageSwitcher/translations/${locale}.json`)).default,
       ...(await import(`@/components/Hero/translations/${locale}.json`)).default,
       ...(await import(`@/components/About/translations/${locale}.json`)).default,
       ...(await import(`@/components/Repertoire/translations/${locale}.json`)).default,
       ...(await import(`@/components/Videos/translations/${locale}.json`)).default,
+      ...(await import(`@/components/Gallery/translations/${locale}.json`)).default,
+      ...(await import(`@/components/MusicDock/translations/${locale}.json`)).default,
+      ...(await import(`@/components/ScrollToTop/translations/${locale}.json`)).default,
       ...(await import(`@/components/Dedication/translations/${locale}.json`)).default,
       ...(await import(`@/components/Footer/translations/${locale}.json`)).default
     }

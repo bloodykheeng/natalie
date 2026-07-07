@@ -1,13 +1,7 @@
 'use client';
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useTransition,
-  type ReactNode
-} from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { createContext, useContext, useState, type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import { updateLocaleAction } from '@/actions/locale';
 import type { Locale } from '@/i18n/routing';
 
@@ -27,22 +21,22 @@ export function LocaleProvider({
   children: ReactNode;
 }) {
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
-  const setLocale = (next: Locale) => {
-    if (next === locale) return;
-    startTransition(async () => {
-      await updateLocaleAction(next);
-      setLocaleState(next);
-      // Rewrite the URL prefix (/en/... ↔ /ru/...) preserving query params
-      const search = typeof window !== 'undefined' ? window.location.search : '';
-      const newPath =
-        pathname.replace(/^\/(en|ru)(?=\/|$)/, `/${next}`) || `/${next}`;
-      router.replace(newPath + search);
-      router.refresh();
-    });
+  const setLocale = async (next: Locale) => {
+    if (next === locale || isPending) return;
+    setIsPending(true);
+    setLocaleState(next);
+    await updateLocaleAction(next);
+    // Full navigation (not a soft router.replace): guarantees the <title>,
+    // metadata and every server-rendered string swap language together.
+    // The pending veil stays up until the new page loads.
+    const search = window.location.search;
+    const hash = window.location.hash;
+    const newPath =
+      pathname.replace(/^\/(en|ru)(?=\/|$)/, `/${next}`) || `/${next}`;
+    window.location.assign(newPath + search + hash);
   };
 
   return (

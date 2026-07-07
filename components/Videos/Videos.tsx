@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Ornament from '@/components/Ornament/Ornament';
 import Reveal from '@/components/Reveal/Reveal';
+import Tilt from '@/components/Tilt/Tilt';
 import { videos, type Video } from './video-data';
 
 const GENRE_BADGE: Record<Video['genreKey'], string> = {
@@ -20,21 +21,70 @@ const GENRE_BADGE: Record<Video['genreKey'], string> = {
 function VideoCard({
   video,
   playLabel,
+  watchLabel,
   genreLabel,
   large = false
 }: {
   video: Video;
   playLabel: string;
+  watchLabel: string;
   genreLabel: string;
   large?: boolean;
 }) {
   const [playing, setPlaying] = useState(false);
   const thumb = `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`;
 
+  const overlay = (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element -- remote YouTube thumbnail, plain img keeps it dependency-free */}
+      <img
+        src={thumb}
+        alt=""
+        loading="lazy"
+        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+      />
+      {/* Constant dark fade (not theme ivory) so thumbnails never wash out */}
+      <span className="absolute inset-0 bg-linear-to-t from-black/55 via-transparent to-transparent" />
+      <span
+        className={`absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gold-500 text-on-gold shadow-[0_0_30px_rgba(212,175,55,0.45)] transition-transform duration-200 group-hover:scale-110 ${
+          large ? 'h-20 w-20' : 'h-14 w-14'
+        }`}
+      >
+        <svg
+          width={large ? 28 : 20}
+          height={large ? 28 : 20}
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          aria-hidden="true"
+          className="translate-x-0.5"
+        >
+          <path d="M4 2.5v11l9-5.5-9-5.5Z" />
+        </svg>
+      </span>
+      {video.embeddable === false && (
+        <span className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold tracking-wide whitespace-nowrap text-gold-300">
+          {watchLabel} ↗
+        </span>
+      )}
+    </>
+  );
+
   return (
-    <figure className="group overflow-hidden rounded-xl border border-gold-500/20 bg-midnight-800/80 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-[0_8px_40px_rgba(212,175,55,0.10)]">
+    <Tilt max={5} className="h-full">
+    <figure className="group h-full overflow-hidden rounded-xl border border-gold-500/20 bg-midnight-800/80 transition-[border-color,box-shadow] duration-300 hover:border-gold-500/50 hover:shadow-[0_8px_40px_rgba(212,175,55,0.10)]">
       <div className="relative aspect-video w-full overflow-hidden bg-midnight-950">
-        {playing ? (
+        {video.embeddable === false ? (
+          // Owner disabled embedding — send the visitor to YouTube instead
+          <a
+            href={`https://www.youtube.com/watch?v=${video.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${watchLabel}: ${video.title}`}
+            className="absolute inset-0 h-full w-full cursor-pointer"
+          >
+            {overlay}
+          </a>
+        ) : playing ? (
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${video.id}?autoplay=1&rel=0`}
             title={video.title}
@@ -49,30 +99,7 @@ function VideoCard({
             aria-label={`${playLabel}: ${video.title}`}
             className="absolute inset-0 h-full w-full cursor-pointer"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element -- remote YouTube thumbnail, plain img keeps it dependency-free */}
-            <img
-              src={thumb}
-              alt=""
-              loading="lazy"
-              className="h-full w-full object-cover opacity-80 transition-[transform,opacity] duration-300 group-hover:scale-105 group-hover:opacity-100"
-            />
-            <span className="absolute inset-0 bg-linear-to-t from-midnight-950/80 via-transparent to-transparent" />
-            <span
-              className={`absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gold-500 text-on-gold shadow-[0_0_30px_rgba(212,175,55,0.45)] transition-transform duration-200 group-hover:scale-110 ${
-                large ? 'h-20 w-20' : 'h-14 w-14'
-              }`}
-            >
-              <svg
-                width={large ? 28 : 20}
-                height={large ? 28 : 20}
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                aria-hidden="true"
-                className="translate-x-0.5"
-              >
-                <path d="M4 2.5v11l9-5.5-9-5.5Z" />
-              </svg>
-            </span>
+            {overlay}
           </button>
         )}
       </div>
@@ -91,6 +118,7 @@ function VideoCard({
         </span>
       </figcaption>
     </figure>
+    </Tilt>
   );
 }
 
@@ -124,6 +152,7 @@ export default function Videos() {
             <VideoCard
               video={featured}
               playLabel={t('play')}
+              watchLabel={t('watchOnYouTube')}
               genreLabel={t(`genres.${featured.genreKey}`)}
               large
             />
@@ -137,6 +166,7 @@ export default function Videos() {
               <VideoCard
                 video={video}
                 playLabel={t('play')}
+                watchLabel={t('watchOnYouTube')}
                 genreLabel={t(`genres.${video.genreKey}`)}
               />
             </Reveal>

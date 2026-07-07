@@ -1,7 +1,8 @@
 /**
- * Slow-drifting aurora borealis made of three blurred gradient ribbons.
- * Pure CSS (transform/opacity only) — GPU friendly, respects reduced motion
- * via the global media query in globals.css.
+ * Slow-drifting sky ribbons. At night they're a teal/violet aurora borealis;
+ * at dawn (light theme) they become rosy peach clouds plus a rising sun glow.
+ * Colors live in globals.css (--aur* variables) so they flip with the theme.
+ * Transform-only animation — GPU friendly, respects reduced motion.
  */
 export default function Aurora() {
   return (
@@ -9,11 +10,11 @@ export default function Aurora() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
     >
-      {/* Blur is baked into the radial gradients (no `filter: blur`) so each
-          ribbon stays a cheap GPU-composited transform animation */}
-      <div className="absolute -top-1/4 left-[-10%] h-[70vh] w-[80vw] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(94,234,212,0.13),rgba(94,234,212,0.05)_45%,transparent_70%)] will-change-transform animate-aurora-a" />
-      <div className="absolute top-[5%] right-[-15%] h-[80vh] w-[70vw] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(167,139,250,0.12),rgba(167,139,250,0.05)_45%,transparent_70%)] will-change-transform animate-aurora-b" />
-      <div className="absolute bottom-[-20%] left-[15%] h-[60vh] w-[75vw] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(125,211,252,0.09),rgba(125,211,252,0.04)_45%,transparent_70%)] will-change-transform animate-aurora-c" />
+      <div className="aurora-ribbon-1 absolute -top-1/4 left-[-10%] h-[70vh] w-[80vw] rounded-full will-change-transform animate-aurora-a" />
+      <div className="aurora-ribbon-2 absolute top-[5%] right-[-15%] h-[80vh] w-[70vw] rounded-full will-change-transform animate-aurora-b" />
+      <div className="aurora-ribbon-3 absolute bottom-[-20%] left-[15%] h-[60vh] w-[75vw] rounded-full will-change-transform animate-aurora-c" />
+      {/* Sunrise glow — visible only in the light theme */}
+      <div className="dawn-sun absolute top-[8%] right-[12%] h-[45vh] w-[45vh] rounded-full will-change-transform animate-float" />
     </div>
   );
 }

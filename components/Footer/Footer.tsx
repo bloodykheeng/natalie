@@ -29,17 +29,17 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 text-center">
         <p className="font-script text-3xl text-gold-gradient">Northern Sky</p>
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-4">
           {SOCIALS.map((social) => (
             <a
               key={social.label}
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={social.label}
-              className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-gold-500/30 text-gold-400 transition-all duration-200 hover:border-gold-400 hover:text-gold-300 hover:shadow-[0_0_18px_rgba(212,175,55,0.25)]"
+              className="inline-flex min-h-11 cursor-pointer items-center gap-2.5 rounded-full border border-gold-500/40 px-5 font-display text-lg text-gold-400 transition-[border-color,color,box-shadow] duration-200 hover:border-gold-400 hover:text-gold-300 hover:shadow-[0_0_18px_rgba(212,175,55,0.25)]"
             >
               {social.icon}
+              {social.label}
             </a>
           ))}
         </div>
